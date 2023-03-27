@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Networking;
 
 public class Result : MonoBehaviour
 {
@@ -19,7 +20,13 @@ public class Result : MonoBehaviour
 
     // public Image ResultImage;
     public Text Type1;
+    public GameObject Type1Panel;
+    public ScrollRect Type1ScrollView;
+    public GameObject Type1ScrollContent;
     public Text Type2;
+    public GameObject Type2Panel;
+    public ScrollRect Type2ScrollView;
+    public GameObject Type2ScrollContent;
     public Sprite[] ResultTypeList;
     public Image ObjImage; // Change Later
     public Sprite[] ResultImgList; // Change Later!!
@@ -95,34 +102,30 @@ public class Result : MonoBehaviour
     {
         // ResultImage.sprite = ResultTypeList[0];
         Type1.text = "visual";
+        StartCoroutine(FetchPreview("https://www.thingiverse.com/thing:1095439", Type1ScrollContent));
         Type2.text = "tactile";
-        ExpandResult();
+        StartCoroutine(FetchPreview("https://www.thingiverse.com/thing:1095439", Type2ScrollContent));
+        ExpandResult(0);
     }
 
     public void ClickActuation()
     {
         Type1.text = "hand";
         Type2.text = "leg";
-        ExpandResult();
+        ExpandResult(1);
     }
 
     public void ClickConstraint()
     {
         Type1.text = "general";
         Type2.text = "hazard";
-        ExpandResult();
+        ExpandResult(3);
     }
 
-    public void ExpandResult() // Add parameter later
+    public void ExpandResult(int typeIdx) // Add parameter later
     {
-        Expand(); // Add parameter later
+        Expand(typeIdx); // Add parameter later
         ExpandResultPanel.SetActive(true);
-    }
-
-    private void Expand() // Add parameter later
-    {
-        
-        // pull out result information to expand result
     }
 
     #endregion
@@ -131,6 +134,86 @@ public class Result : MonoBehaviour
     #region Expand Result Panel
 
     
+
+    private void Expand(int typeIdx) // Add parameter later
+    {
+        switch (typeIdx)
+        {
+            case 0: // Indication
+                break;
+            case 1: // Actuation
+                break;
+            case 2: // Constraint
+                break;
+        }
+        // pull out result information to expand result
+    }
+
+    private IEnumerator FetchPreview(string url, GameObject scrollContent)
+    {
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Error fetching link preview: " + www.error);
+        }
+        else
+        {
+            string html = www.downloadHandler.text;
+            string title = GetMetaTagContent(html, "og:title");
+            string description = GetMetaTagContent(html, "og:description");
+            string imageUrl = GetMetaTagContent(html, "og:image");
+
+            GameObject child = new GameObject();
+            child.transform.SetParent(scrollContent.transform);
+
+            //Text urlComponent = child.AddComponent<Text>();
+            //urlComponent.text = url; 
+            Text titleComponent = child.AddComponent<Text>();
+            titleComponent.text = title;
+            Image imageComponent = child.AddComponent<Image>();
+            imageComponent.sprite = DownloadImage(imageUrl);
+       
+            //GameObject preview = Instantiate(scrollContent);
+            //preview.transform.localScale = Vector3.one;
+
+            //preview.AddComponent<Text>().text = title;
+            //preview.AddComponent<Image>().sprite = DownloadImage(imageUrl);
+
+            //preview.transform.SetParent(transform.GetChild(0), false);
+
+            //Debug.Log("Title: " + title);
+            //Debug.Log("Description: " + description);
+            //Debug.Log("Image URL: " + imageUrl);
+        }
+    }
+
+    private string GetMetaTagContent(string html, string property)
+    {
+        string tag = "<meta property=\"" + property + "\" content=\"";
+        int startIndex = html.IndexOf(tag) + tag.Length;
+        int endIndex = html.IndexOf("\"", startIndex);
+        return html.Substring(startIndex, endIndex - startIndex);
+    }
+
+    private Sprite DownloadImage(string imageUrl)
+    {
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(imageUrl);
+        www.SendWebRequest();
+        while (!www.isDone) { }
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Error downloading image: " + www.error);
+            return null;
+        }
+        else
+        {
+            Texture2D texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+            return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+        }
+    }
 
     public void BackToResult()
     {
