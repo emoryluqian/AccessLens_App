@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Threading;
 using System;
 using System.IO;
+using UnityEditor;
 
 
 public class ViewResult : MonoBehaviour
@@ -15,7 +16,7 @@ public class ViewResult : MonoBehaviour
     public GameObject LoadingViewPanel;
     public Image LoadingImage;
 
-    public string VideoFolderPath = $@"{Application.dataPath}/obj/Debug/Video";
+    public string VideoFolderPath => "Assets/Video";
     public static string VideoPath;
 
     #region Record and Save Video
@@ -37,10 +38,19 @@ public class ViewResult : MonoBehaviour
 
     private void TakeVideo()
     {
-        if (!Directory.Exists(VideoFolderPath))
+        //if (!Directory.Exists(VideoFolderPath))
+        //{
+        //    DirectoryInfo videoDirect = Directory.CreateDirectory(VideoFolderPath);
+        //    Debug.Log($"videoDirect = {videoDirect.FullName}");
+        //}
+
+        if (!AssetDatabase.IsValidFolder(VideoFolderPath))
         {
-            Directory.CreateDirectory(VideoPath);
+            AssetDatabase.CreateFolder("Assets", "Video");
+            Debug.Log($"Video folder created.");
         }
+
+
         // Start recording video
     }
 
@@ -51,7 +61,7 @@ public class ViewResult : MonoBehaviour
 
         // // Change "3/27/2023 2:36:15 PM" to "3-27-2023_2-37-15_PM" in order to avoid invalid characters in file name
         //string today = DateTime.Now.ToString("G").Replace("/","-").Replace(":","-").Replace(" ", "_");
-        //VideoPath = $@"{VideoFolderPath}/{today}.mp4"; // Or use other file extensions
+        //VideoPath = $@"{VideoFolderPath}/{today}.MOV"; // Or use other file extensions
         //FileStream fs = new FileStream(VideoPath, FileMode.Create, FileAccess.Write);
         //Byte[] videoData = ...;
         //fs.Write(videoData, 0, videoData.Length);
@@ -70,14 +80,14 @@ public class ViewResult : MonoBehaviour
     {   
         LoadingViewPanel.SetActive(true);
         // Temporary set for demo. Change Later!!!
-        VideoPath = $@"{VideoFolderPath}/hhhh.mp4";
+        VideoPath = $@"{VideoFolderPath}/3-27-2023_3-40-22_PM.MOV";
     }
 
     /* Backend Tasks
      * 
      * 1. Extract a list of representative images from the video (15th image in 30 frames/sec)
      *    - for example, if the video has 3 seconds, in each second there are 30 frames, get the 15th image from each second
-     *    - to obtain the video, use given `VideoPath`
+     *    - to obtain the video, use given `VideoPath` (refer to line 83)
      * 
      * 2. Run object detection model and get a list of detected objects
      * 
