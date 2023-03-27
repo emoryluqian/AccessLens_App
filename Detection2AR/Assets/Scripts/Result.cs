@@ -17,13 +17,12 @@ public class Result : MonoBehaviour
     public int CurrentObjIdx;
     public Text TypeHolder;
 
-    public Image ResultImage;
+    // public Image ResultImage;
+    public Text Type1;
+    public Text Type2;
     public Sprite[] ResultTypeList;
     public Image ObjImage; // Change Later
     public Sprite[] ResultImgList; // Change Later!!
-    public Text ActuationHolder;
-    public Text ContextHolder;
-    public Text DesignHolder;
 
     private int ObjectIdx = 0; // Change Later!
 
@@ -32,7 +31,8 @@ public class Result : MonoBehaviour
     void Start()
     {
         ObjImage.sprite = ResultImgList[ObjectIdx];
-        TypeHolder.text = "Lamp";
+        // Change later!!
+        TypeHolder.text = "handle-round_rotate";
     }
 
     public void SwipeLeft()
@@ -47,18 +47,7 @@ public class Result : MonoBehaviour
         ObjImage.sprite = ResultImgList[ObjectIdx];
 
         // Change later!!
-        switch (ObjectIdx)
-        {
-            case 0:
-                TypeHolder.text = "Lamp";
-                break;
-            case 1:
-                TypeHolder.text = "Couch";
-                break;
-            case 2:
-                TypeHolder.text = "Table";
-                break;
-        }
+        TypeHolder.text = GetTypeName(ObjectIdx);
         // CurrentObj = DetectObjList[CurrentObjIdx];
         // TypeHolder.text = CurrentObj.Label;
     }
@@ -70,41 +59,57 @@ public class Result : MonoBehaviour
         //    return;
         //}
 
-        ObjectIdx = Math.Min(2, ObjectIdx + 1);
+        ObjectIdx = Math.Min(ResultImgList.Length, ObjectIdx + 1);
         ObjImage.sprite = ResultImgList[ObjectIdx];
         // Change later!!
-        switch (ObjectIdx)
-        {
-            case 0:
-                TypeHolder.text = "Lamp";
-                break;
-            case 1:
-                TypeHolder.text = "Couch";
-                break;
-            case 2:
-                TypeHolder.text = "Table";
-                break;
-        }
+        TypeHolder.text = GetTypeName(ObjectIdx);
+        
         // CurrentObjIdx = Math.Max(DetectObjList.Count - 1, CurrentObjIdx + 1);
         // CurrentObj = DetectObjList[CurrentObjIdx];
         // TypeHolder.text = CurrentObj.Label;
     }
 
-    public void ClickEye()
+    private string GetTypeName(int ObjectIdx)
     {
-        ResultImage.sprite = ResultTypeList[0];
+        // Change later!!
+        string typeHolder = "";
+        switch (ObjectIdx)
+        {
+            case 0:
+                typeHolder = "handle-round_rotate";
+                break;
+            case 1:
+                typeHolder = "handle-bar";
+                break;
+            case 2:
+                typeHolder = "handle-bar";
+                break;
+            case 3:
+                typeHolder = "light switch-toggle";
+                break;
+        }
+        return typeHolder;
+    }
+
+    public void ClickIndication()
+    {
+        // ResultImage.sprite = ResultTypeList[0];
+        Type1.text = "visual";
+        Type2.text = "tactile";
         ExpandResult();
     }
 
-    public void ClickHand()
+    public void ClickActuation()
     {
-        ResultImage.sprite = ResultTypeList[1];
+        Type1.text = "hand";
+        Type2.text = "leg";
         ExpandResult();
     }
 
-    public void ClickWarning()
+    public void ClickConstraint()
     {
-        ResultImage.sprite = ResultTypeList[2];
+        Type1.text = "general";
+        Type2.text = "hazard";
         ExpandResult();
     }
 
