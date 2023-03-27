@@ -15,7 +15,7 @@ public class ViewResult : MonoBehaviour
     public GameObject LoadingViewPanel;
     public Image LoadingImage;
 
-    public static string VideoFolderPath = $@"{Application.dataPath}/obj/debug/Video";
+    public string VideoFolderPath = $@"{Application.dataPath}/obj/Debug/Video";
     public static string VideoPath;
 
     #region Record and Save Video
@@ -105,12 +105,13 @@ public class ViewResult : MonoBehaviour
     {      
         SceneManager.LoadScene(2); // Temporary code for demo. Detele this line later.
 
-        while (!DetectedObject.ListCompleted)
-        {
-            // Update()
-            // Keep ratating the image;
-        }
-        SceneManager.LoadScene(2); // Load 'Result` scene
+        // Comment below codes for now. Add back later
+        //while (!DetectedObject.ListCompleted)
+        //{
+        //    // Update()
+        //    // Keep ratating the image;
+        //}
+        //SceneManager.LoadScene(2); // Load 'Result` scene
     }
 
     #endregion
