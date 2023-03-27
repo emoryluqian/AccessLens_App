@@ -13,12 +13,11 @@ public class Result : MonoBehaviour
     public GameObject ExpandResultPanel;
     public GameObject ConfirmRestartPanel;
 
-    // public DetectObject CurrentObj;
-    // public List<DetectObject> DetectObjList;
-    public int CurrentObjIdx;
+    public DetectedObject CurrentObj;
+    public List<DetectedObject> DetectObjList;
+    private int CurrentObjIdx = 0;
     public Text TypeHolder;
 
-    // public Image ResultImage;
     public Text Type1;
     public GameObject Type1Panel;
     public ScrollRect Type1ScrollView;
@@ -28,57 +27,62 @@ public class Result : MonoBehaviour
     public ScrollRect Type2ScrollView;
     public GameObject Type2ScrollContent;
     public Sprite[] ResultTypeList;
-    public Image ObjImage; // Change Later
-    public Sprite[] ResultImgList; // Change Later!!
 
-    private int ObjectIdx = 0; // Change Later!
+    public Image ObjImage; // Delete Later
+    public Sprite[] ResultImgList; // Delete Later!!
+    private int ObjectIdx = 0; // Delete Later!
 
     #region Result Panel
 
     void Start()
     {
+        // Temporary code for demo only
         ObjImage.sprite = ResultImgList[ObjectIdx];
-        // Change later!!
         TypeHolder.text = "handle-round_rotate";
+
+        //// Comment out for now
+        // SetCurrentObj();
     }
 
     public void SwipeLeft()
     {
-        //if (DetectObjList == null || DetectObjList.Count == 0)
-        //{
-        //    return;
-        //}
-
-        CurrentObjIdx = Math.Max(0, CurrentObjIdx-1);
+        // Temporary code for demo only
         ObjectIdx = Math.Max(0, ObjectIdx - 1);
         ObjImage.sprite = ResultImgList[ObjectIdx];
-
-        // Change later!!
         TypeHolder.text = GetTypeName(ObjectIdx);
-        // CurrentObj = DetectObjList[CurrentObjIdx];
-        // TypeHolder.text = CurrentObj.Label;
+
+        //// Comment out for now
+        //CurrentObjIdx = Math.Max(0, CurrentObjIdx-1);
+        //SetCurrentObj();
     }
 
     public void SwipeRight()
     {
-        //if (DetectObjList == null || DetectObjList.Count == 0)
-        //{
-        //    return;
-        //}
-
+        // Temporary code for demo only
         ObjectIdx = Math.Min(ResultImgList.Length, ObjectIdx + 1);
         ObjImage.sprite = ResultImgList[ObjectIdx];
-        // Change later!!
         TypeHolder.text = GetTypeName(ObjectIdx);
-        
+
+        //// Comment out for now
         // CurrentObjIdx = Math.Max(DetectObjList.Count - 1, CurrentObjIdx + 1);
-        // CurrentObj = DetectObjList[CurrentObjIdx];
-        // TypeHolder.text = CurrentObj.Label;
+        //SetCurrentObj();
     }
 
+    private void SetCurrentObj()
+    {
+        if (DetectObjList == null || DetectObjList.Count == 0)
+        {
+            return;
+        }
+
+        CurrentObj = DetectObjList[CurrentObjIdx];
+        ObjImage.sprite = Resources.Load<Sprite>(CurrentObj.FilePath);
+        TypeHolder.text = CurrentObj.ObjectType.ToString();
+    }
+
+    // Temporary code for demo only
     private string GetTypeName(int ObjectIdx)
     {
-        // Change later!!
         string typeHolder = "";
         switch (ObjectIdx)
         {
@@ -106,6 +110,11 @@ public class Result : MonoBehaviour
         Type2.text = "tactile";
         StartCoroutine(FetchPreview("https://www.thingiverse.com/thing:1095439", Type2ScrollContent));
         ExpandResult(0);
+
+        //// Comment out for now
+        //Type1.text = DetectedObject.IndicationType.visual.ToString();
+        //Type2.text = DetectedObject.IndicationType.tactile.ToString();
+        //ExpandResult();
     }
 
     public void ClickActuation()
@@ -113,6 +122,11 @@ public class Result : MonoBehaviour
         Type1.text = "hand";
         Type2.text = "leg";
         ExpandResult(1);
+
+        //// Comment out for now
+        //Type1.text = DetectedObject.ActuationType.hand.ToString();
+        //Type2.text = DetectedObject.ActuationType.leg.ToString();
+        //ExpandResult();
     }
 
     public void ClickConstraint()
@@ -120,8 +134,14 @@ public class Result : MonoBehaviour
         Type1.text = "general";
         Type2.text = "hazard";
         ExpandResult(3);
+
+        //// Comment out for now
+        //Type1.text = DetectedObject.ConstraintType.general.ToString();
+        //Type2.text = DetectedObject.ConstraintType.hazard.ToString();
+        //ExpandResult();
     }
 
+    // Change Later!
     public void ExpandResult(int typeIdx) // Add parameter later
     {
         Expand(typeIdx); // Add parameter later
@@ -133,8 +153,7 @@ public class Result : MonoBehaviour
 
     #region Expand Result Panel
 
-    
-
+    // Temporary code for demo only
     private void Expand(int typeIdx) // Add parameter later
     {
         switch (typeIdx)
@@ -238,10 +257,7 @@ public class Result : MonoBehaviour
 
     public void Confirm()
     {
-        //ConfirmRestartPanel.SetActive(false);
-        //ExpandResultPanel.SetActive(false);
         SceneManager.LoadScene(1); // Load the `Detect` scene
-
     }
 
     #endregion
