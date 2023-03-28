@@ -7,10 +7,13 @@ using System.Threading;
 using System;
 using System.IO;
 using UnityEditor;
+using UnityEngine.Video;
 
 
 public class ViewResult : MonoBehaviour
 {
+    public GameObject RawImage;
+    public VideoPlayer MyVideoPlayer;
     public GameObject ToRecordButton;
     public GameObject RecordingButton;
     public GameObject LoadingViewPanel;
@@ -25,6 +28,9 @@ public class ViewResult : MonoBehaviour
     {
         RecordingButton.SetActive(true);
         ToRecordButton.SetActive(false);
+        RawImage.SetActive(true);
+        MyVideoPlayer.Play();
+        
         TakeVideo();
     }
 
@@ -32,8 +38,12 @@ public class ViewResult : MonoBehaviour
     {
         ToRecordButton.SetActive(true);
         RecordingButton.SetActive(false);
+        MyVideoPlayer.Stop();
+        
         StopVideo();
         LoadingView();
+        RawImage.SetActive(false);
+        //VideoImage.SetActive(true);
     }
 
     private void TakeVideo()
