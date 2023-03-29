@@ -39,7 +39,7 @@ public class ViewResult : MonoBehaviour
         ToRecordButton.SetActive(true);
         RecordingButton.SetActive(false);
         MyVideoPlayer.Stop();
-        
+       
         StopVideo();
         LoadingView();
         RawImage.SetActive(false);
@@ -54,11 +54,11 @@ public class ViewResult : MonoBehaviour
         //    Debug.Log($"videoDirect = {videoDirect.FullName}");
         //}
 
-        if (!AssetDatabase.IsValidFolder(VideoFolderPath))
-        {
-            AssetDatabase.CreateFolder("Assets", "Video");
-            Debug.Log($"Video folder created.");
-        }
+        //if (!AssetDatabase.IsValidFolder(VideoFolderPath))
+        //{
+        //    AssetDatabase.CreateFolder("Assets", "Video");
+        //    Debug.Log($"Video folder created.");
+        //}
 
 
         // Start recording video
