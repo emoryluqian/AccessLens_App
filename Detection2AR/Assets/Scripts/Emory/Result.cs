@@ -18,6 +18,7 @@ public class Result : MonoBehaviour
     public List<DetectedObject> DetectObjList;
     private int CurrentObjIdx = 0;
     public Text TypeHolder;
+    public Text ObjectHolder;
 
     public Dropdown TypeDropDown;
     public GameObject TypePanel;
@@ -47,7 +48,8 @@ public class Result : MonoBehaviour
     {
         // Temporary code for demo only
         ObjImage.sprite = ResultImgList[ObjectIdx];
-        TypeHolder.text = "handle-round_rotate";
+        ObjectHolder.text = "Object: knob";
+        TypeHolder.text = "Type: round_rotate";
 
         //// Comment out for now
         // SetCurrentObj();
@@ -58,7 +60,7 @@ public class Result : MonoBehaviour
         // Temporary code for demo only
         ObjectIdx = Math.Max(0, ObjectIdx - 1);
         ObjImage.sprite = ResultImgList[ObjectIdx];
-        TypeHolder.text = GetTypeName();
+        GetTypeName();
 
         //// Comment out for now
         //CurrentObjIdx = Math.Max(0, CurrentObjIdx-1);
@@ -70,7 +72,7 @@ public class Result : MonoBehaviour
         // Temporary code for demo only
         ObjectIdx = Math.Min(ResultImgList.Length - 1, ObjectIdx + 1);
         ObjImage.sprite = ResultImgList[ObjectIdx];
-        TypeHolder.text = GetTypeName();
+        GetTypeName();
 
         //// Comment out for now
         // CurrentObjIdx = Math.Max(DetectObjList.Count - 1, CurrentObjIdx + 1);
@@ -90,25 +92,27 @@ public class Result : MonoBehaviour
     }
 
     // Temporary code for demo only
-    private string GetTypeName()
+    private void GetTypeName()
     {
-        string typeHolder = "";
         switch (ObjectIdx)
         {
             case 0:
-                typeHolder = "handle-round_rotate";
+                ObjectHolder.text = "Object: knob";
+                TypeHolder.text = "Type: round_rotate";
                 break;
             case 1:
-                typeHolder = "handle-bar";
+                ObjectHolder.text = "Object: faucet";
+                TypeHolder.text = "Type: handle_lever";
                 break;
             case 2:
-                typeHolder = "handle-bar";
+                ObjectHolder.text = "Object: handle";
+                TypeHolder.text = "Type: bar_small";
                 break;
             case 3:
-                typeHolder = "light switch-toggle";
+                ObjectHolder.text = "Object: light switch";
+                TypeHolder.text = "Type: toggle_single";
                 break;
         }
-        return typeHolder;
     }
 
     public void ClickIndication()
@@ -133,8 +137,8 @@ public class Result : MonoBehaviour
         TypeDropDown.ClearOptions();
         List<Dropdown.OptionData> actuationOptions = new List<Dropdown.OptionData>()
         {
-            new Dropdown.OptionData(DetectedObject.ActuationType.hand.ToString()),
-            new Dropdown.OptionData(DetectedObject.ActuationType.leg.ToString())
+            new Dropdown.OptionData(DetectedObject.ActuationType.operation.ToString()),
+            new Dropdown.OptionData(DetectedObject.ActuationType.reach.ToString())
         };
         TypeDropDown.options = actuationOptions;
         TypeDropDown.RefreshShownValue();

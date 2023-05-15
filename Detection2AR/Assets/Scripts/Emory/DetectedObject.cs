@@ -45,8 +45,8 @@ public class DetectedObject : MonoBehaviour
 
     public enum ActuationType
     {
-        hand = 0,
-        leg = 1
+        operation = 0,
+        reach = 1
         // Add more in the future
     };
 
