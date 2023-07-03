@@ -8,12 +8,12 @@ using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine.Video;
+using System.Runtime.InteropServices;
 
 
 public class ViewResult : MonoBehaviour
 {
     public GameObject RawImage;
-    public VideoPlayer MyVideoPlayer;
     public GameObject ToRecordButton;
     public GameObject RecordingButton;
     public GameObject LoadingViewPanel;
@@ -29,7 +29,6 @@ public class ViewResult : MonoBehaviour
         RecordingButton.SetActive(true);
         ToRecordButton.SetActive(false);
         RawImage.SetActive(true);
-        MyVideoPlayer.Play();
         
         TakeVideo();
     }
@@ -38,7 +37,6 @@ public class ViewResult : MonoBehaviour
     {
         ToRecordButton.SetActive(true);
         RecordingButton.SetActive(false);
-        MyVideoPlayer.Stop();
        
         StopVideo();
         LoadingView();
@@ -75,6 +73,16 @@ public class ViewResult : MonoBehaviour
         //FileStream fs = new FileStream(VideoPath, FileMode.Create, FileAccess.Write);
         //Byte[] videoData = ...;
         //fs.Write(videoData, 0, videoData.Length);
+    }
+
+    #endregion
+
+    #region Access built-in Photos App
+    [DllImport("__Internal")]
+    private static extern void _OpenGallery();
+    public static void OpenGallery()
+    {
+        //if ()
     }
 
     #endregion
