@@ -11,13 +11,14 @@ using UnityEngine.Video;
 using System.Runtime.InteropServices;
 
 
-public class ViewResult : MonoBehaviour
+public class DetectSceneManager : MonoBehaviour
 {
-    public GameObject RawImage;
     public GameObject ToRecordButton;
     public GameObject RecordingButton;
     public GameObject LoadingViewPanel;
     public Image LoadingImage;
+    public Camera cam;
+    private string imagePath;
 
     public string VideoFolderPath => "Assets/Video";
     public static string VideoPath;
@@ -28,7 +29,6 @@ public class ViewResult : MonoBehaviour
     {
         RecordingButton.SetActive(true);
         ToRecordButton.SetActive(false);
-        RawImage.SetActive(true);
         
         TakeVideo();
     }
@@ -40,7 +40,6 @@ public class ViewResult : MonoBehaviour
        
         StopVideo();
         LoadingView();
-        RawImage.SetActive(false);
         //VideoImage.SetActive(true);
     }
 
@@ -75,14 +74,60 @@ public class ViewResult : MonoBehaviour
         //fs.Write(videoData, 0, videoData.Length);
     }
 
+    public void TakeImage()
+    {
+        StartCoroutine(TakeImageAndSave());
+    }
+
+    private IEnumerator TakeImageAndSave()
+    {
+        yield return new WaitForEndOfFrame();
+
+        RenderTexture rt = new RenderTexture(Screen.width, Screen.height, 24);
+        Texture2D photo = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+
+        Camera.main.targetTexture = rt;
+        cam.targetTexture = rt;
+        Camera.main.Render();
+        cam.Render();
+        RenderTexture.active = rt;
+        photo.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+
+        RenderTexture.active = null;
+        Camera.main.targetTexture = null;
+        cam.targetTexture = null;
+
+        Destroy(rt);
+        photo.Apply();
+
+        var bytes = photo.EncodeToPNG();
+        Destroy(photo);
+
+        imagePath = System.IO.Path.Combine(Application.persistentDataPath, $"test-{DateTime.Now.ToString("MMddyyyyHHmmss")}.png");
+        Debug.Log($"Photo saved in: {imagePath}");
+        System.IO.File.WriteAllBytes(imagePath, bytes);
+
+        yield return new WaitForEndOfFrame();
+
+        NativeGallery.SaveImageToGallery(imagePath, "test-", DateTime.Now.ToString("MMddyyyyHHmmss") + ".png");
+    }
+
     #endregion
 
-    #region Access built-in Photos App
+    #region Access Gallery&Photos App
     [DllImport("__Internal")]
     private static extern void _OpenGallery();
     public static void OpenGallery()
     {
         //if ()
+    }
+
+    public void OpenGalleryPhotos()
+    {
+        // callback is null for ios
+        // NativeGallery.MediaPickCallback callback = new NativeGallery.MediaPickCallback(imagePath);
+        string path = Application.persistentDataPath;
+        NativeGallery.GetMixedMediasFromGallery(null, NativeGallery.MediaType.Video|NativeGallery.MediaType.Image, $@"{VideoFolderPath}/3-27-2023_3-40-22_PM.MOV");
     }
 
     #endregion
