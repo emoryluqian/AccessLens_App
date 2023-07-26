@@ -17,8 +17,8 @@ public class Result : MonoBehaviour
     public DetectedObject CurrentObj;
     public List<DetectedObject> DetectObjList;
     private int CurrentObjIdx = 0;
-    public Text TypeHolder;
-    public Text ObjectHolder;
+    public Text SubClassHolder;
+    public Text ClassHolder;
 
     public Dropdown TypeDropDown;
     public GameObject TypePanel;
@@ -39,7 +39,6 @@ public class Result : MonoBehaviour
     public GameObject btn3;
     private string curURL3;
     private int IssueType; // 1,2,3
-    public GameObject NoResultPanel;
     
 
     #region Result Panel
@@ -48,8 +47,8 @@ public class Result : MonoBehaviour
     {
         // Temporary code for demo only
         ObjImage.sprite = ResultImgList[ObjectIdx];
-        ObjectHolder.text = "Object: knob";
-        TypeHolder.text = "Type: round_rotate";
+        ClassHolder.text = "Object: knob";
+        SubClassHolder.text = "Type: round_rotate";
 
         //// Comment out for now
         // SetCurrentObj();
@@ -88,7 +87,7 @@ public class Result : MonoBehaviour
 
         CurrentObj = DetectObjList[CurrentObjIdx];
         ObjImage.sprite = Resources.Load<Sprite>(CurrentObj.FilePath);
-        TypeHolder.text = CurrentObj.ObjectType.ToString();
+        SubClassHolder.text = CurrentObj.ObjectType.ToString();
     }
 
     // Temporary code for demo only
@@ -97,20 +96,20 @@ public class Result : MonoBehaviour
         switch (ObjectIdx)
         {
             case 0:
-                ObjectHolder.text = "Object: knob";
-                TypeHolder.text = "Type: round_rotate";
+                ClassHolder.text = "Object: knob";
+                SubClassHolder.text = "Type: round_rotate";
                 break;
             case 1:
-                ObjectHolder.text = "Object: faucet";
-                TypeHolder.text = "Type: handle_lever";
+                ClassHolder.text = "Object: faucet";
+                SubClassHolder.text = "Type: handle_lever";
                 break;
             case 2:
-                ObjectHolder.text = "Object: handle";
-                TypeHolder.text = "Type: bar_small";
+                ClassHolder.text = "Object: handle";
+                SubClassHolder.text = "Type: bar_small";
                 break;
             case 3:
-                ObjectHolder.text = "Object: light switch";
-                TypeHolder.text = "Type: toggle_single";
+                ClassHolder.text = "Object: light switch";
+                SubClassHolder.text = "Type: toggle_single";
                 break;
         }
     }
@@ -171,7 +170,6 @@ public class Result : MonoBehaviour
         string optionText = TypeDropDown.options[val].text;
         UnityEngine.Debug.Log("val is " + optionText);
 
-        NoResultPanel.SetActive(false);
         if (val == 0) // visual, hand, general
         {
             switch (ObjectIdx)
@@ -185,7 +183,6 @@ public class Result : MonoBehaviour
                         curURL2 = "";
                         btn3.SetActive(false);
                         curURL3 = "";
-                        NoResultPanel.SetActive(true);
                     }
                     else if (IssueType == 2) // actuation-hand
                     {
@@ -221,7 +218,6 @@ public class Result : MonoBehaviour
                         curURL2 = "";
                         btn3.SetActive(false);
                         curURL3 = "";
-                        NoResultPanel.SetActive(true);
                     }
                     else if (IssueType == 2) // actuation-hand
                     {
@@ -231,7 +227,6 @@ public class Result : MonoBehaviour
                         curURL2 = "";
                         btn3.SetActive(false);
                         curURL3 = "";
-                        NoResultPanel.SetActive(true);
                     }
                     else if (IssueType == 3) // constraint-general
                     {
@@ -253,7 +248,6 @@ public class Result : MonoBehaviour
                         curURL2 = "";
                         btn3.SetActive(false);
                         curURL3 = "";
-                        NoResultPanel.SetActive(true);
                     }
                     else if (IssueType == 2) // actuation-hand
                     {
@@ -263,7 +257,6 @@ public class Result : MonoBehaviour
                         curURL2 = "";
                         btn3.SetActive(false);
                         curURL3 = "";
-                        NoResultPanel.SetActive(true);
                     }
                     else if (IssueType == 3) // constraint-general
                     {
@@ -328,7 +321,6 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
                         }
                         else if(IssueType == 2) // actuation-leg
                         {
@@ -338,7 +330,6 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
                         }
                         else if (IssueType == 3) // constraint-hazard
                         {
@@ -348,7 +339,7 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
+
                         }
                         break;
                     case 1: // 1. handle bar
@@ -360,7 +351,7 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
+   
                         }
                         else if(IssueType == 2) // actuation-leg
                         {
@@ -370,7 +361,7 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
+           
                         }
                         else if (IssueType == 3) // constraint-hazard
                         {
@@ -380,7 +371,7 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
+  
                         }
                         break;
                     case 2: // 2. handle bar
@@ -392,7 +383,6 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
                         }
                         else if (IssueType == 2) // actuation-leg
                         {
@@ -402,7 +392,7 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
+         
                         }
                         else if (IssueType == 3) // constraint-hazard
                         {
@@ -412,7 +402,7 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
+         
                         }
                         break;
                     case 3: // 3. light switch-toggle
@@ -445,7 +435,7 @@ public class Result : MonoBehaviour
                             curURL2 = "";
                             btn3.SetActive(false);
                             curURL3 = "";
-                            NoResultPanel.SetActive(true);
+               
                         }
                     break;
                 }

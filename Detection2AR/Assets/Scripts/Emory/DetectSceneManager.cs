@@ -15,8 +15,10 @@ public class DetectSceneManager : MonoBehaviour
 {
     public GameObject ToRecordButton;
     public GameObject RecordingButton;
+
     public GameObject LoadingViewPanel;
     public Image LoadingImage;
+
     public Camera cam;
     private string imagePath;
 

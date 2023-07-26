@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Detect.unity
     guid: 0ac926d5817d54df194262ddcc5326f5
   - enabled: 1
-    path: Assets/Scenes/Result.unity
+    path: Assets/Scenes/Suggestion.unity
     guid: e50061217c7474fdf9845498451a2cf9
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 9346c9404215843728532ad0a4b0ec80,
